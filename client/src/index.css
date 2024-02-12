@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+/* Styles pour le reste de la page */
+body {
+    font-family: 'Montserrat', sans-serif !important; 
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: rgb(204, 206, 185);
+}
+
+code {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.bs1{
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+h1{
+    font-size: 30px;
+    font-weight: bold;
+    color: #000000;
+}
+.header{
+    padding: 10px;
+
+}
+.content{
+    min-height: 90hv;
+
+}
+.caring{
+    height: 150px;
+    width: auto;
+    border-radius: 5px;
+    transform: translateY(-60px);
+}
+p{
+    margin: 5px;
+    text-align: left;
+    padding: 0;
+}
+.btn1{
+    box-shadow: none !important;
+    background-color: white !important;
+    color:rgb(211, 12, 5) !important;
+    border: 1px solid !important;
+}
+.bt1:focus{
+    border: none;
+
+}
+.spinner{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+}
+.car{
+    margin-top: 90px;
+    height: 140px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+.car:hover{
+    height: 180px;
+}
+.car:hover > .car-content{
+    opacity:1;
+    transform: translateY(-30px);
+}
+.car-content{
+transform: translateY(-200px);
+opacity: 0;
+
+}
+.car-content {
+    margin: 0;  /* Set margin to 0 */
+    padding: 0; /* Set padding to 0 */
+    transition: 0.3s;
+}
+.login{
+    background-color: black;
+    padding-top: 50px;
+    min-height: 100vh;
+    font-family: 'Montserrat', sans-serif ;
+
+}
+.login h1 {
+    color: white;
+    opacity: 0.6;
+    margin-bottom: 30px;
+  }
+  
+  .login label {
+    color: white !important;
+    opacity: 0.6;
+  }
+
+.login-form{
+    background-color: #1f1f1f;
+}
+.login-form input,.login .login-form .ant-input-password {
+    background-color: #333333 !important;
+    border: none !important;
+    color: white;
+    
+  }
+
+  
+.login-heading {
+    text-align: left;
+  }
+  .login .login-form button {
+    float: left;
+    margin-top: 10px; /* Add margin or adjust as needed */
+    margin-bottom: 20px;
+  }
+  .login-logo{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 57%;
+    bottom: 50%;
+    font-size: 60px;
+    transform: translateY(-50%,-50%);
+    opacity: 0.3 !important;
+  }
+  .image-preview {
+    width: 900px; /* Remplacez cette valeur par la largeur souhaitée */
+    height: auto; /* Cela maintiendra le rapport hauteur/largeur de l'image */
+    max-width: 100%; /* Cela garantit que l'image ne dépasse pas la largeur du conteneur parent si elle est plus petite */
+  }
+  .login a {
+    text-decoration: none;
+    color: white;
+  }
+  
+  
