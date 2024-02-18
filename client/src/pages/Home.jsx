@@ -3,6 +3,7 @@ import DefaultLayout from '../components/DefaultLayout'
 import { useDispatch, useSelector } from 'react-redux'
 import getAllCars from '../redux/actions/CarsActions'
 import { Button,Row, Col } from 'antd';
+import  {Link} from 'react-router-dom'
 import Spinner from '../components/Spinner';
 function Home() {
   const {cars} = useSelector(state => state.CarsReducer);
@@ -29,8 +30,12 @@ function Home() {
                       </div>
                  
                       <div>
-                      <button className='btn1 mr-2'>Book Now</button>
-                      </div>
+                      <button className='btn1 mr-2'>
+  <Link to={`/bookingcar/${car._id}`}>Book Now</Link>
+</button>
+
+
+ </div>
                     </div>
                     </div>
                   

@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -13,7 +13,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
-          <Route path='/bookingcar' element={<BookingCar />} />
+          <Route path='/bookingcar/:carid' element={<BookingCar />} />
         </Routes>
       </BrowserRouter>
     </div>
@@ -21,3 +21,11 @@ function App() {
 }
 
 export default App;
+
+export function ProtectedRoutes(props) {
+  if (localStorage.getItem('user')) {
+    return <Route {...props} />;
+  } else {
+    return <Navigate to='/login' />;
+  }
+}

@@ -28,6 +28,9 @@ export const userRegister = (reqObj) => async (dispatch) => {
       const response = await axios.post("/api/users/registe", reqObj);
       localStorage.setItem('user', JSON.stringify(response.data))
       message.success("Register Success")
+      setTimeout(()=>{
+        window.location.href='/login'
+    })
       dispatch({ type: "Loading", payload: response.data });
     } catch (error) {
       console.error(error);

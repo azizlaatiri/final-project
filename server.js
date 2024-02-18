@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const app = express();
-const port = process.env.PORT || 6000;
+const port = process.env.PORT || 6020;
 
 app.use(express.json()); 
 
@@ -28,9 +28,13 @@ const carSchema = new mongoose.Schema({
   fueltype: {
     type: String,
   },
+  capacity: {
+    type: String,
+  },
   bookedtimeslots: {
     type: String,
   },
+  
 });
 
 const Car = mongoose.model('Car', carSchema);
@@ -45,6 +49,7 @@ app.get('/api/cars', async (req, res) => {
       }
   
       const carDetails = allCars.map(car => ({
+        _id: car._id,
         name: car.name,
         image: car.image,
         rentperdays: car.rentperdays,
@@ -70,6 +75,7 @@ app.post('/api/cars', async (req, res) => {
       image,
       rentperdays,
       fueltype,
+      capacity,
       bookedtimeslots,
     });
 
@@ -144,6 +150,7 @@ app.post('/api/users/login', async (req, res) => {
     const user = await User.findOne({ username, password });
 
     if (user) {
+      await user.save();
       res.json({ success: true, user });
     } else {
       res.status(401).json({ success: false, message: 'Invalid username or password' });
@@ -153,5 +160,52 @@ app.post('/api/users/login', async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 });
+const bookingSchema = new mongoose.Schema({
+  car: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'cars',
+    required: true,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users', // Assuming you have a User schema
+    required: true,
+  },
+  startTime: {
+    type: Date,
+    required: true,
+  },
+  endTime: {
+    type: Date,
+    required: true,
+  },
+  totalAmount: {
+    type: Number,
+    required: true,
+  },
+  DriverRequired: {
+    type: Boolean,
+    default: false,
+  },
+  transactionId: {
+    type: String,
+  },
+},
+{ timestamps: true });
 
+const booking = mongoose.model('Booking', bookingSchema);
+
+
+app.post('/api/bookings', async (req, res) => {
+  req.body.transactionId = '1234'; 
+
+  try {
+    const newbooking = new booking(req.body);
+    await newbooking.save();
+    res.status(201).json({ message: 'Booking created successfully', booking: newbooking });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: `Booking creation failed: ${error.message}` });
+  }
+});
 app.listen(port, () => console.log(`App is listening on port ${port}`));

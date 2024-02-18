@@ -17,7 +17,7 @@ code {
 h1{
     font-size: 30px;
     font-weight: bold;
-    color: #000000;
+    color:rgb(211, 12, 5);
 }
 .header{
     padding: 10px;
@@ -35,7 +35,6 @@ h1{
 }
 p{
     margin: 5px;
-    text-align: left;
     padding: 0;
 }
 .btn1{
@@ -111,7 +110,7 @@ opacity: 0;
   }
   .login .login-form button {
     float: left;
-    margin-top: 10px; /* Add margin or adjust as needed */
+    margin-top: 10px; 
     margin-bottom: 20px;
   }
   .login-logo{
@@ -125,13 +124,46 @@ opacity: 0;
     opacity: 0.3 !important;
   }
   .image-preview {
-    width: 900px; /* Remplacez cette valeur par la largeur souhaitée */
-    height: auto; /* Cela maintiendra le rapport hauteur/largeur de l'image */
-    max-width: 100%; /* Cela garantit que l'image ne dépasse pas la largeur du conteneur parent si elle est plus petite */
+    width: 900px; 
+    height: auto; 
+    max-width: 100%; 
   }
   .login a {
     text-decoration: none;
     color: white;
   }
+
+  a{
+    text-decoration: none;
+  }
+  .header.bs1 button{
+    box-shadow: none !important;
+    background-color: white !important;
+    color:rgb(211, 12, 5) !important;
+    border: 1px solid !important;
+    padding: 5px 15px !important;
+    outline: none !important;
+    display: none;
+  }
+  .header.bs1 .menu {
+    background-color: rgb(204, 206, 185);
+    display: block;
+  }
+  .carimg2{
+    height: 350px;
+    border-radius: 10px;
+    width: auto;
+  }
+  divider{
+    color: black;
+  }
   
+  @media (max-width: 720px) {
+    .header.bs1 button {
+      display: block;
+    }
   
+    .menu {
+      display: none;
+    }
+  }
