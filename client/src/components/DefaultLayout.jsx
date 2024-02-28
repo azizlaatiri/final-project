@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { HomeOutlined, BookOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons';
 
 
+
 function DefaultLayout(props) {
   const menuStyle = {
     backgroundColor: 'rgb(204, 206, 185)',
@@ -41,40 +42,36 @@ Update Profil      </a>
     ),
   },
 ];
+
 function handleLogout() {
 
   window.location.href = "/login"; 
 }
   return (
     <div>
-      <div className='header bs1'>
-        <Row gutter={16} justify='center'>
-          <Col lg={20} sm={24} xs={24}>
-          <div className='d-flex justify-content-between'>
-        <Title level={2} style={{ color: 'Black' }}>
+    <div className="header bs1">
+      <Row gutter={16} justify="center">
+        <Col lg={20} sm={24} xs={24}>
+          <div className="d-flex justify-content-between">
+            <h1>
             CarSito
-          </Title>            <Menu mode="horizontal" style={menuStyle}>
-            <Menu.Item key='home' icon={<HomeOutlined />}>
-              <Link to='/'>Home</Link>
-            </Menu.Item>
-            <Menu.Item key='bookings' icon={<BookOutlined />}>
-              <Link to='/bookings'>My Bookings</Link>
-            </Menu.Item>
-            <Menu.Item key='updateProfile' icon={<UserOutlined />}>
-              <Link to='/update-profile'>Update Profile</Link>
-            </Menu.Item>
-            <Menu.Item key='logout' icon={<LogoutOutlined />}>
-              <Link to='/login'>Logout</Link>
-            </Menu.Item>
-          </Menu>
-            <Dropdown
-  menu={{
-    items,
-  }}
-  placement="bottomRight"
->
-  <Button>Menu</Button>
-</Dropdown>
+            </h1>
+
+              
+            
+            <Menu mode="horizontal" style={menuStyle}>
+              <Menu.Item key='home' icon={<HomeOutlined />}>
+                <Link to='/'>Home</Link>
+              </Menu.Item>
+              <Menu.Item key='bookings' icon={<BookOutlined />}>
+                <Link to='/bookings'>My Bookings</Link>
+              </Menu.Item>
+         
+              <Menu.Item key='logout' icon={<LogoutOutlined />}>
+                <Link to='/login'>Logout</Link>
+              </Menu.Item>
+            </Menu>
+
 
 
 

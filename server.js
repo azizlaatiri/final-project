@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const app = express();
-const port = process.env.PORT || 6020;
+const port = process.env.PORT || 6000;
 
 app.use(express.json()); 
 
@@ -13,57 +13,68 @@ mongoose.connect('mongodb://localhost:27017/carsito', {
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Error connecting to MongoDB:', err));
 
-const carSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
-  rentperdays: {
-    type: Number,
-  },
-  fueltype: {
-    type: String,
-  },
-  capacity: {
-    type: String,
-  },
-  bookedtimeslots: {
-    type: String,
-  },
+  const carSchema = new mongoose.Schema({
+    name: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
+    rentperdays: {
+      type: Number,
+    },
+    fueltype: {
+      type: String,
+    },
+    capacity: {
+      type: String,
+    },
+    bookedtimeslots: [
+      {
+        to: String,
+        from: String,
+      }
+    ],
+  });
   
-});
 
 const Car = mongoose.model('Car', carSchema);
 
-
 app.get('/api/cars', async (req, res) => {
-    try {
-      const allCars = await Car.find();
-  
-      if (!allCars || allCars.length === 0) {
-        return res.status(404).json({ message: 'No cars found' });
-      }
-  
-      const carDetails = allCars.map(car => ({
+  try {
+    const allCars = await Car.find();
+
+    if (!allCars || allCars.length === 0) {
+      return res.status(404).json({ message: 'No cars found' });
+    }
+
+    const carDetails = await Promise.all(allCars.map(async (car) => {
+      const bookings = await booking.find({ car: car._id });
+
+      const bookedtimeslots = bookings.map(booking => booking.bookedTimeSlots);
+
+      // Mettez à jour le champ bookedtimeslots dans le schéma Car
+      await Car.findByIdAndUpdate(car._id, { bookedtimeslots });
+
+      return {
         _id: car._id,
         name: car.name,
         image: car.image,
         rentperdays: car.rentperdays,
         fueltype: car.fueltype,
-        bookedtimeslots:car.bookedtimeslots
+        bookedtimeslots,
+      };
+    }));
 
-      }));
-  
-      res.json(carDetails);
-    } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ message: `Internal Server Error: ${error.message}` });
-    }
-  });
+    res.json(carDetails);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: `Internal Server Error: ${error.message}` });
+  }
+});
+
   
 
 app.post('/api/cars', async (req, res) => {
@@ -115,7 +126,8 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-  }
+  },
+  _id: mongoose.Schema.Types.ObjectId,  
 });
 
 const User = mongoose.model('User', UserSchema);
@@ -160,38 +172,68 @@ app.post('/api/users/login', async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 });
+app.get('/api/users', async (req, res) => {
+  try {
+    const allusers = await User.find();
+
+    if (!allusers || allusers.length === 0) {
+      return res.status(404).json({ message: 'No user found' });
+    }
+
+    const userDetails = allusers.map(user => ({
+      _id: user._id,
+      username: user.username,
+      password: user.password,
+     
+
+    }));
+
+    res.json(userDetails);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: `Internal Server Error: ${error.message}` });
+  }
+});
 const bookingSchema = new mongoose.Schema({
-  car: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'cars',
-    required: true,
-  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'users', // Assuming you have a User schema
+    ref: 'User',
     required: true,
   },
-  startTime: {
-    type: Date,
+  car: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Car',
     required: true,
   },
-  endTime: {
-    type: Date,
-    required: true,
-  },
-  totalAmount: {
+  totalhours: {
     type: Number,
     required: true,
   },
-  DriverRequired: {
+  totalamount: {
+    type: Number,
+    required: true,
+  },
+  driverRequired: {
     type: Boolean,
     default: false,
   },
+  bookedTimeSlots: {
+    to: {
+      type: String,
+      required: true,
+    },
+    from: {
+      type: String,
+      required: true,
+    },
+  },
   transactionId: {
     type: String,
+    default: '1234',
   },
-},
-{ timestamps: true });
+}, { timestamps: true });
+
+
 
 const booking = mongoose.model('Booking', bookingSchema);
 
@@ -201,6 +243,7 @@ app.post('/api/bookings', async (req, res) => {
 
   try {
     const newbooking = new booking(req.body);
+   
     await newbooking.save();
     res.status(201).json({ message: 'Booking created successfully', booking: newbooking });
   } catch (error) {
